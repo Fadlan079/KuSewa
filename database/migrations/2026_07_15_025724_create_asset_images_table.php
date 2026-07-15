@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('asset_images', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('asset_id')->constrained()->onDelete('restrict');
             $table->string('image');
             $table->timestamps();
         });

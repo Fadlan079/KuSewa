@@ -30,4 +30,8 @@ class owner_profile extends Model
     public function assets(){
         return $this->hasMany(asset::class);
     }
+
+    public function roomChats(){
+        return $this->hasMany(room_chat::class);
+    }
 }

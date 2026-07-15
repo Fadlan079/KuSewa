@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_profile_id')->constrained('owner_profiles')->onDelete('cascade');
+            $table->foreignId('owner_profile_id')->constrained('owner_profiles')->onDelete('restrict');
             $table->string('title');
             $table->string('description');
             $table->json('detail');

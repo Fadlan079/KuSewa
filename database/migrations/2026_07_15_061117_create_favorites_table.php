@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_pricings', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
             $table->foreignId('asset_id')->constrained()->onDelete('restrict');
-            $table->decimal('subtotal',15,2);
-            $table->decimal('service_fee',15,2);
-            $table->decimal('total',15,2);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asset_pricings');
+        Schema::dropIfExists('favorites');
     }
 };

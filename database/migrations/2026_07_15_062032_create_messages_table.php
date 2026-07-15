@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_pricings', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id')->constrained()->onDelete('restrict');
-            $table->decimal('subtotal',15,2);
-            $table->decimal('service_fee',15,2);
-            $table->decimal('total',15,2);
+            $table->foreignId('room_chat_id')->constrained()->onDelete('restrict');
+            $table->boolean('is_read');
+            $table->enum('message_type',['text','image','file']);
+            $table->string('message');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asset_pricings');
+        Schema::dropIfExists('messages');
     }
 };

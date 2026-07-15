@@ -34,4 +34,20 @@ class User extends Authenticatable
     {
         return $this->hasOne(owner_profile::class);
     }
+
+    public function bookings(){
+        return $this->hasMany(booking::class);
+    }
+
+    public function favorites(){
+        return $this->hasMany(favorite::class);
+    }
+
+    public function roomChats(){
+        return $this->hasMany(room_chat::class);
+    }
+
+    public function reviews(){
+        return $this->hasMany(review::class);
+    }
 }

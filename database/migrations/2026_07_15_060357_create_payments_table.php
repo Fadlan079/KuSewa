@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_pricings', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_id')->constrained()->onDelete('restrict');
-            $table->decimal('subtotal',15,2);
-            $table->decimal('service_fee',15,2);
-            $table->decimal('total',15,2);
+            $table->foreignId('booking_id')->constrained()->onDelete('restrict');
+            $table->string('payment_method');
+            $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
+            $table->date('payment_date');
+            $table->string('proof_of_payment');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asset_pricings');
+        Schema::dropIfExists('payments');
     }
 };
