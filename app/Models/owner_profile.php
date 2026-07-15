@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class owner_profile extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'national_id',
+        'address',
+        'place_of_birth',
+        'date_of_birth',
+        'ktp_photo',
+        'status',
+        'verification_at'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function bankAccounts()
+    {
+        return $this->hasMany(bank_account::class);
+    }
+
+    public function assets(){
+        return $this->hasMany(asset::class);
+    }
+}
