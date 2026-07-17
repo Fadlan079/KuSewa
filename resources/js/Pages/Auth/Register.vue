@@ -1,5 +1,5 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -17,14 +17,19 @@ const form = useForm({
 
 const submit = () => {
     if (!isPasswordStrong.value) {
+        form.setError(
+            'password',
+            'Password belum memenuhi seluruh persyaratan di bawah.'
+        );
         return;
     }
+
+    form.clearErrors('password');
 
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
-
 const showPassword = ref(false);
 
 const passwordScore = computed(() => {
@@ -69,13 +74,25 @@ const passwordLevel = computed(() => {
     }
 });
 
+const passwordRules = computed(() => {
+    const password = form.password;
+
+    return {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        symbol: /[^A-Za-z0-9]/.test(password),
+    };
+});
+
 const isPasswordStrong = computed(() => {
-    return passwordScore.value === 4 && form.password.length >= 8;
+    return Object.values(passwordRules.value).every(Boolean);
 });
 </script>
 
 <template>
-    <GuestLayout>
+    <AppLayout>
         <Head title="Register" />
 
         <form @submit.prevent="submit">
@@ -155,6 +172,41 @@ const isPasswordStrong = computed(() => {
                 </div>
 
                 <InputError class="mt-2" :message="form.errors.password" />
+                <div
+                    v-if="form.password.length > 0"
+                    class="mt-3 rounded-lg border bg-gray-50 p-3 text-sm"
+                >
+                    <p class="mb-2 font-semibold text-gray-700">
+                        Password harus memenuhi syarat berikut:
+                    </p>
+
+                    <ul class="space-y-1">
+                        <li :class="passwordRules.length ? 'text-green-600' : 'text-red-500'">
+                            {{ passwordRules.length ? '✓' : '✗' }}
+                            Minimal 8 karakter
+                        </li>
+
+                        <li :class="passwordRules.uppercase ? 'text-green-600' : 'text-red-500'">
+                            {{ passwordRules.uppercase ? '✓' : '✗' }}
+                            Memiliki huruf besar (A-Z)
+                        </li>
+
+                        <li :class="passwordRules.lowercase ? 'text-green-600' : 'text-red-500'">
+                            {{ passwordRules.lowercase ? '✓' : '✗' }}
+                            Memiliki huruf kecil (a-z)
+                        </li>
+
+                        <li :class="passwordRules.number ? 'text-green-600' : 'text-red-500'">
+                            {{ passwordRules.number ? '✓' : '✗' }}
+                            Memiliki angka (0-9)
+                        </li>
+
+                        <li :class="passwordRules.symbol ? 'text-green-600' : 'text-red-500'">
+                            {{ passwordRules.symbol ? '✓' : '✗' }}
+                            Memiliki simbol (!@#$%^&*)
+                        </li>
+                    </ul>
+                </div>
 
                 <div
                     class="mt-3"
@@ -217,11 +269,12 @@ const isPasswordStrong = computed(() => {
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing || !isPasswordStrong }"
-                    :disabled="form.processing || !isPasswordStrong"
+                    :disabled="form.processing"
                 >
                     Register
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+    </AppLayout>
 </template>
+ 

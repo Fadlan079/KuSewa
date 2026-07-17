@@ -11,6 +11,13 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 
+        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+        <meta property="og:title" content="KuSewa | Platform Penyewaan Aset Tak Bergerak">
+        <meta property="og:description" content="Lahan kosong, baliho strategis, apartemen premium, dan ruang komersial dalam satu platform.">
+        <meta property="og:image" content="{{ asset('logo.png') }}">
+        {{-- <meta property="og:url" content="https://kusewa.com/"> --}}
+        <meta property="og:type" content="website">
+
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
