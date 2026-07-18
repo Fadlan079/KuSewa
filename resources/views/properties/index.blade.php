@@ -4,52 +4,6 @@
 
 @section('content')
 @php
-// Data dummy yang disesuaikan persis dengan screenshot KuSewa
-$properties = [
-[
-'name' => 'Villa Pondok Jabuk',
-'location' => 'Batuaa, Samarinda',
-'price' => 'Rp. 2.100.000,00',
-'old_price' => 'Total 2.210.000,00',
-'rating' => '8/10 Memuaskan',
-'review_count' => '12rb ulasan',
-'stars' => 4,
-'image' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85',
-'thumbs' => [
-'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=400&q=85',
-'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=400&q=85',
-],
-],
-[
-'name' => 'Villa Pondok Jabuk',
-'location' => 'Batuaa, Samarinda',
-'price' => 'Rp. 2.100.000,00',
-'old_price' => 'Total 2.210.000,00',
-'rating' => '8/10 Memuaskan',
-'review_count' => '12rb ulasan',
-'stars' => 4,
-'image' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=85',
-'thumbs' => [
-'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=400&q=85',
-'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=400&q=85',
-],
-],
-[
-'name' => 'Homestay Garden',
-'location' => 'Samarinda Seberang',
-'price' => 'Rp. 1.150.000,00',
-'old_price' => 'Total 1.250.000,00',
-'rating' => '7/10 Memuaskan',
-'review_count' => '12rb ulasan',
-'stars' => 3,
-'image' => 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=85',
-'thumbs' => [
-'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=85',
-'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=400&q=85',
-],
-],
-];
-
 $ratingFilters = [
 ['count' => '(52)', 'stars' => 3],
 ['count' => '(31)', 'stars' => 4],
@@ -361,7 +315,7 @@ $areaFilters = ['Samarinda Kota', 'Sebulu', 'Kepulauan Derawan', 'Kutai Kartaneg
                   <p class="text-[9px] font-bold text-emerald-600 mt-1">Kamar masih tersedia</p>
                 </div>
 
-                <a href="#"
+                <a href="{{ route('properties.show', $loop->index) }}"
                   class="mt-4 inline-flex h-8 items-center justify-center rounded-sm bg-[#fec107] px-4 text-center text-[10px] font-bold text-white transition hover:bg-amber-500 shadow-xs">
                   Lihat detail
                 </a>
