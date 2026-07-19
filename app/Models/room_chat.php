@@ -20,7 +20,7 @@ class room_chat extends Model
         return $this->belongsTo(asset::class);
     }
 
-    public function owner_profile(){
+    public function ownerProfile(){
         return $this->belongsTo(owner_profile::class);
     }
 

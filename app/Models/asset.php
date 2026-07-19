@@ -11,30 +11,51 @@ class asset extends Model
         'asset_category_id',
         'title',
         'description',
-        'detail',
         'latitude',
         'longitude',
         'status',
+    ];
+
+    protected $casts = [
+        'detail' => 'array',
     ];
 
     public function ownerProfile(){
         return $this->belongsTo(owner_profile::class);
     }
 
-    public function assetImages(){
+    public function images(){
         return $this->hasMany(asset_image::class);
     }
 
-    public function assetCategory(){
+    public function firstImage(){
+        // Tidak gunakan oldestOfMany() karena menghasilkan JOIN yang membuat
+        // kolom asset_id menjadi ambigu saat dipakai bersama column shorthand.
+        // hasOne+orderBy menghasilkan query sederhana tanpa JOIN.
+        return $this->hasOne(asset_image::class)->orderBy('id');
+    }
+
+    public function category(){
         return $this->belongsTo(asset_category::class);
     }
 
-    public function assetPricing(){
-        return $this->hasOne(asset_pricing::class);
+    public function pricings(){
+        return $this->hasMany(asset_pricing::class);
+    }
+
+    public function primaryPricing()
+    {
+        return $this->hasOne(asset_pricing::class)
+            ->where('is_primary', true);
     }
 
     public function bookings(){
         return $this->hasMany(booking::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasManyThrough(review::class, booking::class);
     }
 
     public function favorites(){

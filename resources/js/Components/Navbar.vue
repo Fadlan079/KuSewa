@@ -4,6 +4,11 @@ import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
 import { useHomeSearch } from '@/Composables/useHomeSearch';
 
+const isHome = computed(() => route().current('Home'));
+const isBantuan = computed(() => route().current('Bantuan.*'));
+const isActivity = computed(() => route().current('aktivitas.*'));
+const isKotakMasuk = computed(() => route().current('kotakmasuk.*'));
+
 const props = defineProps({
     transparent: {
         type: Boolean,
@@ -14,15 +19,15 @@ const props = defineProps({
 const page = usePage();
 const isScrolled = ref(false);
 
-const { 
+const {
     keywordQuery, isMobileSearchOpen, isKeywordSheetOpen,
-    
+
     // Jadwal
     desktopCalendarPage, prevDesktopMonth, nextDesktopMonth, monthsData, daysOfWeek, selectDate, isStartDate, isInRange, isEndDate, endDate, formattedSchedule,
 
     // Harga
     priceError, formattedMinPrice, formattedMaxPrice, handleMinPriceInput, handleMaxPriceInput, sliderTrack, minPercent, maxPercent, startDrag, activeThumb, parsedMinPrice, parsedMaxPrice, maxLimit, formatPriceShort,
-    
+
     // Aset
     assetSearchQuery, selectedAssets, filteredAssetCategories, toggleAsset,
 
@@ -38,7 +43,7 @@ let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
 const handleScroll = () => {
     // Mengubah logo menjadi search bar setelah scroll melewati 60px
     isScrolled.value = window.scrollY > 60;
-    
+
     if (desktopNavActiveMenu.value !== null) {
         if (Math.abs(window.scrollY - lastScrollY) > 15) {
             desktopNavActiveMenu.value = null;
@@ -76,11 +81,20 @@ onUnmounted(() => {
 const isCurrentlyTransparent = computed(() => {
     return props.transparent && !isScrolled.value;
 });
+
+const initials = computed(() => {
+    const name = page.props.auth.user?.name ?? '';
+
+    return name
+        .trim()
+        .substring(0, 2)
+        .toUpperCase();
+});
 </script>
 <template>
     <nav
         :class="[
-            'fixed top-0 left-0 w-full z-50 transition-all duration-300',
+            'fixed top-0 left-0 w-full z-[100] transition-all duration-300',
             isCurrentlyTransparent
                 ? 'bg-transparent shadow-none border-transparent'
                 : 'bg-white shadow-sm border-b border-[#6C757D]/10'
@@ -195,53 +209,82 @@ const isCurrentlyTransparent = computed(() => {
 
                 <!-- Desktop Menu Links -->
                 <div class="hidden md:flex items-center space-x-7">
+
                     <Link
-                        href="#"
-                        :class="[
-                            'text-sm font-semibold transition-colors duration-300',
-                            isCurrentlyTransparent
+                        :href="route('Home')"
+                        class="relative text-sm font-semibold transition-colors duration-300"
+                        :class="isHome
+                            ? 'text-[#FFC000]'
+                            : isCurrentlyTransparent
                                 ? 'text-white hover:text-[#FFC000]'
-                                : 'text-[#0A2540] hover:text-[#FFC000]'
-                        ]"
+                                : 'text-[#0A2540] hover:text-[#FFC000]'"
                     >
-                        Jelajahi
+                        Beranda
+
+                        <span
+                            v-if="isHome"
+                            class="absolute -bottom-2 left-0 w-full h-[2.5px] bg-[#FFC000] rounded-full"
+                        ></span>
                     </Link>
 
+                    <!-- Bantuan -->
+                    <Link
+                        v-if="!page.props.auth.user"
+                        href="#"
+                        :class="[
+                            'relative text-sm font-semibold transition-colors duration-300',
+                            isBantuan
+                                ? 'text-[#FFC000]'
+                                : isCurrentlyTransparent
+                                    ? 'text-white hover:text-[#FFC000]'
+                                    : 'text-[#0A2540] hover:text-[#FFC000]'
+                        ]"
+                    >
+                        <span
+                            v-if="isBantuan"
+                            class="absolute -bottom-2 left-0 w-full h-[2.5px] bg-[#FFC000] rounded-full"
+                        ></span>
+                        Bantuan
+                    </Link>
+
+                    <!-- Aktivitas -->
                     <Link
                         v-if="page.props.auth.user"
                         href="#"
                         :class="[
-                            'text-sm font-semibold transition-colors duration-300',
-                            isCurrentlyTransparent
-                                ? 'text-white hover:text-[#FFC000]'
-                                : 'text-[#0A2540] hover:text-[#FFC000]'
+                            'relative text-sm font-semibold transition-colors duration-300',
+                            isActivity
+                                ? 'text-[#FFC000]'
+                                : isCurrentlyTransparent
+                                    ? 'text-white hover:text-[#FFC000]'
+                                    : 'text-[#0A2540] hover:text-[#FFC000]'
                         ]"
                     >
-                        Favorit
+                        <span
+                            v-if="isActivity"
+                            class="absolute -bottom-2 left-0 w-full h-[2.5px] bg-[#FFC000] rounded-full"
+                        ></span>
+                        Aktivitas
                     </Link>
 
+                    <!-- Kotak Masuk -->
                     <Link
+                        v-if="page.props.auth.user"
                         href="#"
                         :class="[
-                            'text-sm font-semibold transition-colors duration-300',
-                            isCurrentlyTransparent
-                                ? 'text-white hover:text-[#FFC000]'
-                                : 'text-[#0A2540] hover:text-[#FFC000]'
+                            'relative text-sm font-semibold transition-colors duration-300',
+                            isInbox
+                                ? 'text-[#FFC000]'
+                                : isCurrentlyTransparent
+                                    ? 'text-white hover:text-[#FFC000]'
+                                    : 'text-[#0A2540] hover:text-[#FFC000]'
                         ]"
                     >
-                        Bantuan
-                    </Link>
-
-                    <Link
-                        href="#"
-                        :class="[
-                            'text-sm font-semibold transition-colors duration-300',
-                            isCurrentlyTransparent
-                                ? 'text-white hover:text-[#FFC000]'
-                                : 'text-[#0A2540] hover:text-[#FFC000]'
-                        ]"
-                    >
-                        Mulai Sewakan Aset
+                        <span
+                            v-if="isInbox"
+                            class="absolute -bottom-2 left-0 w-full h-[2.5px] bg-[#FFC000] rounded-full"
+                        ></span>
+                        Kotak Masuk
                     </Link>
                 </div>
 
@@ -249,7 +292,7 @@ const isCurrentlyTransparent = computed(() => {
                 <div class="hidden md:flex items-center gap-4">
                     <!-- Desktop Mini Search Bar -->
                     <div class="relative flex items-center w-[220px] lg:w-[280px]">
-                        
+
                         <!-- Overlay for closing the modal -->
                         <div v-if="desktopNavActiveMenu" @click="desktopNavActiveMenu = null" class="fixed inset-0 z-40"></div>
 
@@ -287,7 +330,7 @@ const isCurrentlyTransparent = computed(() => {
                             leave-to-class="transform scale-95 opacity-0 -translate-y-4"
                         >
                             <div v-if="desktopNavActiveMenu" class="absolute top-[120%] right-0 w-[340px] bg-white rounded-2xl shadow-xl border border-[#6C757D]/10 p-5 z-50 origin-top flex flex-col max-h-[75vh] overflow-y-auto hide-scrollbar transition-all duration-300 overscroll-contain">
-                                
+
                                 <!-- Keyword Search Modal -->
                                 <div v-if="desktopNavActiveMenu === 'keyword'">
                                     <div class="flex items-center justify-between mb-3">
@@ -366,7 +409,7 @@ const isCurrentlyTransparent = computed(() => {
                                         </button>
                                         <h2 class="text-sm font-extrabold text-[#0A2540] capitalize">{{ desktopNavActiveMenu === 'aset' ? 'Jenis Aset' : desktopNavActiveMenu }}</h2>
                                     </div>
-                                    
+
                                     <!-- JENIS ASET -->
                                     <div v-if="desktopNavActiveMenu === 'aset'" class="w-full">
                                         <div class="flex items-center gap-3 border border-[#6C757D]/30 rounded-xl p-2 bg-white mb-4 focus-within:border-[#0A2540] focus-within:ring-2 focus-within:ring-[#0A2540]/20 transition">
@@ -431,7 +474,7 @@ const isCurrentlyTransparent = computed(() => {
                                                 <i class="fa-solid fa-chevron-right text-[#0A2540] text-xs"></i>
                                             </button>
                                         </div>
-                                        
+
                                         <div class="grid grid-cols-7 gap-y-3 mb-1 px-2">
                                             <div v-for="day in daysOfWeek" :key="'d1-'+day" class="text-center text-[10px] font-bold text-[#6C757D]">{{ day }}</div>
                                             <div v-for="i in monthsData[desktopCalendarPage]?.emptyDaysStart" :key="'e1-'+i"></div>
@@ -521,17 +564,34 @@ const isCurrentlyTransparent = computed(() => {
                         <i class="fa-solid fa-chevron-down text-[10px] ml-0.5"></i>
                     </div>
 
-                    <Link
-                        :href="route('login')"
-                        :class="[
-                            'relative px-6 py-2 rounded-full font-semibold transition-all duration-300 active:scale-95',
-                            isCurrentlyTransparent
-                                ? 'bg-[#FFC000]/10 backdrop-blur-md border border-[#FFC000]/30 text-white shadow-lg hover:bg-[#FFC000] hover:border-[#FFC000] hover:text-[#0A2540]'
-                                : 'bg-[#FFC000] border border-[#FFC000] text-[#0A2540] shadow-md hover:opacity-90'
-                        ]"
-                    >
-                        Login
-                    </Link>
+                    <div v-if="page.props.auth.user">
+                        <img
+                            v-if="page.props.auth.user.profile_photo"
+                            :src="page.props.auth.user.profile_photo"
+                            class="w-10 h-10 rounded-full object-cover"
+                        />
+
+                        <div
+                            v-else
+                            class="w-10 h-10 rounded-full bg-[#0A2540] text-white flex items-center justify-center font-bold"
+                        >
+                            {{ initials }}
+                        </div>
+                    </div>
+
+                    <div v-else>
+                        <Link
+                            :href="route('login')"
+                            :class="[
+                                'relative px-6 py-2 rounded-full font-semibold transition-all duration-300 active:scale-95',
+                                isCurrentlyTransparent
+                                    ? 'bg-[#FFC000]/10 backdrop-blur-md border border-[#FFC000]/30 text-white shadow-lg hover:bg-[#FFC000] hover:border-[#FFC000] hover:text-[#0A2540]'
+                                    : 'bg-[#FFC000] border border-[#FFC000] text-[#0A2540] shadow-md hover:opacity-90'
+                            ]"
+                        >
+                            Login
+                        </Link>
+                    </div>
                 </div>
 
             </div>

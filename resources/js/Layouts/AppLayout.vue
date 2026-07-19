@@ -1,6 +1,8 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
+import Bottombar from '@/Components/Bottombar.vue';
 
 defineProps({
     transparentNavbar: {
@@ -18,5 +20,9 @@ defineProps({
         <main :class="{ 'pt-16': !transparentNavbar }">
             <slot />
         </main>
+
+        <Bottombar />
+        
+        <Footer />
     </div>
 </template>

@@ -40,10 +40,10 @@ const {
 
 <template>
     <!-- 1. WRAPPER UTAMA: Berongga (padding) di mobile, kembali full-width (tanpa padding) di desktop (md:px-0 md:pt-0) -->
-    <div class="w-full px-3 pt-3 pb-6 sm:px-6 md:px-0 md:pt-0 md:pb-0">
+    <div class="w-full px-3 pt-3 pb-6 sm:px-6 md:px-0 md:pt-0 md:pb-0 relative z-30">
 
         <!-- 2. HERO CONTAINER: rounded di mobile, lurus kembali (rounded-none) di desktop -->
-        <div class="relative w-full h-[360px] sm:h-[420px] md:h-[500px] lg:h-[540px] bg-cover bg-center rounded-2xl md:rounded-none overflow-hidden shadow-sm md:shadow-none transition-all duration-300" style="background-image: url('/public.png');">
+        <div class="relative w-full h-[360px] sm:h-[420px] md:h-[500px] lg:h-[540px] bg-cover bg-center rounded-2xl md:rounded-none overflow-hidden md:overflow-visible shadow-sm md:shadow-none transition-all duration-300" style="background-image: url('/public.png');">
 
             <!-- Overlay gelap -->
             <div class="absolute inset-0 bg-black/50"></div>
@@ -66,7 +66,7 @@ const {
                 <!-- Overlay untuk menutup modal jika di klik di luar -->
                 <div v-if="desktopActiveMenu" @click="desktopActiveMenu = null" class="fixed inset-0 z-40 bg-black/10 transition-opacity"></div>
 
-                <div class="hidden md:flex mt-6 lg:mt-8 flex-col w-full max-w-[850px] relative z-50">
+                <div class="hidden md:flex mt-6 lg:mt-8 flex-col w-full max-w-[850px] relative z-[70]">
 <!-- Card Utama (Slim & Compact) -->
 <div class="bg-white rounded-full p-1.5 shadow-lg border border-gray-200/80 flex flex-row items-center justify-between w-full transition-all duration-300">
 
@@ -122,7 +122,7 @@ const {
                         leave-from-class="transform scale-100 opacity-100 translate-y-0"
                         leave-to-class="transform scale-95 opacity-0 -translate-y-4"
                     >
-                        <div v-if="desktopActiveMenu" class="absolute top-[108%] w-full bg-white rounded-[32px] shadow-2xl border border-[#6C757D]/10 p-6 z-50 origin-top flex flex-col max-h-[75vh] overflow-y-auto hide-scrollbar">
+                        <div v-if="desktopActiveMenu" class="absolute top-[108%] w-full bg-white rounded-[32px] shadow-2xl border border-[#6C757D]/10 p-6 z-[70] origin-top flex flex-col max-h-[75vh] overflow-y-auto hide-scrollbar">
 
                             <!-- ================== DESKTOP: LOKASI ================== -->
                             <div v-if="desktopActiveMenu === 'lokasi'" class="w-full max-w-sm mx-auto">

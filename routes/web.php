@@ -4,17 +4,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AssetController;
 
-Route::get('/', function () {
-    return Inertia::render('Home/index', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('Home');
+Route::get('/', [AssetController::class, 'index'])->name('Home');
+Route::resource('assets', AssetController::class)->only(['show']);
 
 Route::middleware(['auth', 'role:owner'])->group(function () {
+
 });
 
 Route::get('/dashboard', function () {

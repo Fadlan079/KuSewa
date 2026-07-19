@@ -20,7 +20,7 @@ class booking extends Model
         return $this->belongsTo(asset::class);
     }
 
-    public function assetPricing(){
+    public function pricing(){
         return $this->belongsTo(asset_pricing::class);
     }
 
@@ -33,6 +33,6 @@ class booking extends Model
     }
 
     public function reviews(){
-        return $this->hasMany(review::class);
+        return $this->hasOne(review::class);
     }
 }

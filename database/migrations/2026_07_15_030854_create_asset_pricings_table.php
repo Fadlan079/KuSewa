@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('asset_pricings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained()->onDelete('restrict');
-            $table->decimal('subtotal',15,2);
-            $table->decimal('service_fee',15,2);
-            $table->decimal('total',15,2);
+            $table->enum('period', ['hour','day','week','month','year']);
+            $table->boolean('is_primary')->default(false);
+            $table->decimal('price',15,2);
             $table->timestamps();
         });
     }

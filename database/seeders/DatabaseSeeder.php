@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             AssetSeeder::class,
             AssetImageSeeder::class,
             AssetPricingSeeder::class,
+            BookingSeeder::class,
+            ReviewSeeder::class,
         ]);
 
     }
