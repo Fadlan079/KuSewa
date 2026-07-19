@@ -8,6 +8,7 @@ class asset extends Model
 {
     protected $fillable = [
         'owner_profile_id',
+        'asset_category_id',
         'title',
         'description',
         'detail',
@@ -22,6 +23,10 @@ class asset extends Model
 
     public function assetImages(){
         return $this->hasMany(asset_image::class);
+    }
+
+    public function assetCategory(){
+        return $this->belongsTo(asset_category::class);
     }
 
     public function assetPricing(){
