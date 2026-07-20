@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class asset extends Model
 {
+    protected $table = 'assets';
+
     protected $fillable = [
         'owner_profile_id',
         'asset_category_id',

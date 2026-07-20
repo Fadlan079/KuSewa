@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class asset_category extends Model
 {
+    protected $table = 'asset_categories';
+
     protected $fillable = [
         'name',
         'icon',
