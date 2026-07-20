@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import AssetCardSkeleton from './AssetCardSkeleton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
     asset: {
@@ -46,7 +46,28 @@ onUnmounted(() => {
 });
 
 const toggleFavorite = () => {
-    props.asset.isFavorite = !props.asset.isFavorite;
+
+    if (props.asset.isFavorite) {
+        router.delete(
+            route('favorites.destroy', props.asset.favorite_id),
+            {
+                preserveScroll: true
+            }
+        );
+
+        return;
+    }
+
+
+    router.post(
+        route('favorites.store'),
+        {
+            asset_id: props.asset.id
+        },
+        {
+            preserveScroll: true
+        }
+    );
 };
 
 const formatRupiah = (value) => {
